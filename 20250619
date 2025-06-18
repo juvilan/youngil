@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교무회의_교무부_주요안건</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            min-height: 520px; /* Minimum height for consistency */
+        }
+        .page.active {
+            display: flex;
+            align-items: flex-start; /* Align content to the top */
+            justify-content: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+        .tab-button.active {
+            color: #0f766e; /* teal-700 */
+            border-bottom-color: #0f766e;
+            font-weight: 700;
+        }
+        .tab-button:hover {
+            color: #14b8a6; /* teal-500 */
+        }
+        .reference-box {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            background-color: #f8fafc;
+        }
+        .content-block {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0; /* slate-200 */
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        .content-block .sub-title {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 700;
+            color: #0f766e; /* teal-700 */
+            font-size: 1.125rem; /* text-lg */
+            margin-bottom: 0.5rem;
+        }
+        .content-block .sub-title::before {
+            content: '■';
+            color: #2dd4bf; /* teal-400 */
+            margin-right: 0.6rem;
+            font-size: 0.8em;
+        }
+        /* highlight-item을 직접 li에 적용하도록 변경 */
+        li.highlight-item {
+            background-color: #f0fdfa; /* teal-50 */
+            border-left: 4px solid #14b8a6; /* teal-500 */
+            padding: 0.75rem 1rem;
+            border-radius: 0 0.375rem 0.375rem 0;
+            display: block;
+            list-style-type: none; /* Remove bullet from this specific list item */
+        }
+        /* 기본 리스트 아이템에만 적용되도록 */
+        .reference-box ul li:not(.highlight-item) {
+            list-style-type: disc; /* Ensure default bullet for non-highlighted items */
+        }
+        .summary-highlight {
+            background-color: #0d9488; /* teal-600 */
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease;
+        }
+        .summary-highlight:hover {
+            transform: scale(1.03);
+        }
+        .summary-highlight strong {
+            color: #ccfbf1; /* teal-100 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+    <div class="w-full max-w-6xl mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-black text-slate-900">교무회의_교무부_주요안건</h1>
+        </header>
+
+        <nav id="tab-container" class="mb-8 border-b border-slate-300 flex flex-wrap justify-center gap-x-4 md:gap-x-8">
+            </nav>
+
+        <main id="content-container" class="relative bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+            </main>
+    </div>
+
+    <script>
+        const slidesData = [
+            { 
+                id: 'agenda-1', menu: '고사/문항', icon: '📝', title: '1. 고사 관련 연수 및 문항 검토 지침', 
+                blocks: [
+                    { description: '문항 검토 책임 강화: 형식적 서명이 아닌, 오류 여부 등 **철저한 검토 요망.**' },
+                    { description: '재시험 원칙: 만점 조정은 불가피한 경우만 제한적으로 허용, **원칙은 재시험 실시.**' }
+                ],
+                reference: {
+                    title: '[참고자료] 2025 학업성적관리 시행지침',
+                    points: [
+                        '문항 오류 발생 시, 교과협의회와 학업성적관리위원회 심의를 거쳐 학교장 결재로 후속 조치 방안 결정함.',
+                        '<span class="highlight-item"><strong>\'모두정답\'의 경우 재시험 진행..</strong></span>', // 이 부분은 span을 제거하고 li에 직접 클래스를 부여하도록 JS에서 처리
+                        '평가의 타당성·공정성·신뢰성 확보에 유의하여 <strong>\'해당 문항 제외 처리(만점 조정)\' 가능함.</strong>'
+                    ]
+                }
+            },
+            {
+                id: 'agenda-2', menu: '문항 제작', icon: '⚠️', title: '2. 문항 제작 시 특별 주의 사항',
+                blocks: [
+                    {
+                         subtitle: '합답형 문항 형식',
+                         description: `<ul class="list-disc list-outside ml-5 text-slate-600 space-y-2">
+                                            <li><strong>&lt;보기&gt;의 선택지 개수가 다른 경우:</strong> ‘옳은 것만을 <보기>에서 있는 대로 고른 것은?’</li>
+                                            <li><strong>&lt;보기&gt;의 선택지 개수가 동일한 경우:</strong> ‘옳은 것을 <보기>에서 고른 것은?’</li>
+                                          </ul>`
+                    },
+                    { 
+                        subtitle: '권장 표현 및 표기 방법 준수', 
+                        description: `<ul class="list-disc list-outside ml-5 text-slate-600 space-y-1">
+                                            <li><strong>&lt;보기&gt;에서</strong> (O) / 보기에서 (X)</li>
+                                            <li><strong>&lt;그림1&gt;, &lt;그림2&gt;, &lt;표1&gt;, &lt;표2&gt;</strong> (O) / 그림1, 그림2, 표1, 표2 (X)</li>
+                                          </ul>`
+                    },
+                    {
+                         subtitle: '부정형 문항 형식',
+                         description: `<ul class="list-disc list-outside ml-5 text-slate-600 space-y-1">
+                                            <li>**이중 부정형 문장 지양**<br>(예: ‘~로 가장 옳지 않은 것은?’, ‘~로 가장 알맞지 않은 것은?’ 등)<br><span class="text-sm text-slate-500">(굳이 논란의 여지를 만들지 않도록 유의)</span></li>
+                                          </ul>`
+                    }
+                ]
+            },
+            { 
+                id: 'agenda-3', menu: '평가/채점', icon: '📊', title: '3. 평가 점수 산출 및 채점 일정', 
+                blocks: [
+                    {
+                        subtitle: '분할 점수 산출 (총 2회)',
+                        description: `성적 산출 및 분할 점수 결재는 아래와 같이 총 2회 실시됨.<ul class="list-disc list-outside ml-5 space-y-2 mt-2">
+                                            <li><strong>1차 산출:</strong> 기말고사 성적 산출 및 결재</li>
+                                            <li><strong>2차 산출:</strong> 1학기 최종 성적(중간+기말+수행 합산) 산출(교과) 및 결재(고사계)</li>
+                                          </ul>`
+                    },
+                    {
+                        subtitle: '채점 일정 준수',
+                        description: '전체 성적 산출에 직결되므로, **반드시 기한 내 마무리 요망.**'
+                    }
+                ]
+            },
+            { 
+                id: 'agenda-4', menu: '평가계획', icon: '📋', title: '4. 평가계획 관련 지침', 
+                blocks: [
+                    { subtitle: '평가계획서 변경', description: '평가 비율 등 주요 사항 변경 시, **학업성적관리위원회 심의 필요.**<br> <span class="text-sm text-slate-500">→ 학생, 학부모에게 고사 전 안내</span>' },
+                    { subtitle: '채점기준 변경', description: '채점기준 변경 시, **기 안내된 절차에 따라 처리 요망.**' }
+                ]
+            },
+            { 
+                id: 'agenda-5', menu: '최소성취수준', icon: '👨‍🏫', title: '5. 1학년 최소성취수준 보장지도', 
+                blocks: [
+                    { subtitle: '대상자 선정', description: '기말고사 종료 후, **즉시 선별 작업 완료.**' },
+                    { subtitle: '운영 및 심의', description: '**각 과별 책임 지도** 운영, 관련 활동의 **결과**를 심의 받아야 함.' }
+                ],
+                reference: {
+                    title: '[필수 제출 서류]',
+                    points: [
+                        '최소 성취수준 보장지도 계획서',
+                        '예방지도 출석부',
+                        '보장지도 출석부'
+                    ]
+                }
+            },
+            { 
+                id: 'agenda-6', menu: '생활기록부', icon: '📔', title: '6. 생활기록부 점검 및 작성', 
+                blocks: [
+                    { subtitle: '세부 일정', description: '**교무기획 및 학생부 담당 선생님께서 협의하여 추후 안내** 예정.' },
+                    { subtitle: '기본 목표', description: '세부 일정과 별개로, **방학식 전까지 작성을 완료**하는 것을 기본 목표로 함.' },
+                    { subtitle: '준수 사항', description: '**점검 이전에 작성 완료**하여 오류 최소화 요망.' }
+                ]
+            },
+            { 
+                id: 'agenda-7', menu: '요약', icon: '📌', title: '전체 당부사항 요약', 
+                blocks: [
+                    { type: 'summary', description: '<strong>고사 문항:</strong> 책임감 있는 검토' },
+                    { type: 'summary', description: '<strong>채점 일정:</strong> 기한 엄수' },
+                    { type: 'summary', description: '<strong>생기부 작성:</strong> 점검 전 완료 목표' }
+                ]
+            }
+        ];
+
+        const tabContainer = document.getElementById('tab-container');
+        const contentContainer = document.getElementById('content-container');
+
+        // markdown ** 텍스트만 <strong> 태그로 변환하고, text-teal-600 클래스 적용
+        function formatContent(content) {
+            return content.replace(/\*\*(.*?)\*\*/g, '<strong class="text-teal-600">$1</strong>');
+        }
+
+        function renderContent() {
+            slidesData.forEach((data, index) => {
+                // 탭 버튼 생성 및 추가
+                const tabButton = document.createElement('button');
+                tabButton.className = 'tab-button py-3 px-2 text-slate-600 text-lg focus:outline-none';
+                tabButton.textContent = data.menu;
+                tabButton.addEventListener('click', () => showPage(index));
+                tabContainer.appendChild(tabButton);
+
+                // 페이지 요소 생성
+                const pageEl = document.createElement('div');
+                pageEl.id = data.id;
+                pageEl.className = 'page'; // display: none 기본 적용
+
+                let blocksHtml = '<div class="space-y-4">';
+                if(data.blocks) {
+                    data.blocks.forEach(block => {
+                        if (block.type === 'summary') {
+                             blocksHtml += `<div class="summary-highlight">${formatContent(block.description)}</div>`;
+                        } else {
+                            blocksHtml += `
+                                <div class="content-block">
+                                    ${block.subtitle ? `<h3 class="sub-title">${block.subtitle}</h3>` : ''}
+                                    <div class="text-slate-600 leading-relaxed">${formatContent(block.description)}</div>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+                blocksHtml += '</div>';
+                
+                let referenceHtml = '';
+                if(data.reference) {
+                    referenceHtml = `
+                        <div class="reference-box">
+                            <h4 class="font-bold text-slate-700 mb-2">${data.reference.title}</h4>
+                            <ul class="list-disc list-outside ml-5 text-slate-600 space-y-2">
+                                ${data.reference.points.map(point => {
+                                    // 'highlight-item' 클래스를 직접 <li>에 적용하도록 수정
+                                    if(point.includes('<span class="highlight-item">')) {
+                                        // span 태그를 제거하고 li에 직접 클래스 부여
+                                        const cleanPoint = point.replace('<span class="highlight-item">', '').replace('</span>', '');
+                                        return `<li class="highlight-item">${formatContent(cleanPoint)}</li>`;
+                                    }
+                                    return `<li>${formatContent(point)}</li>`;
+                                }).join('')}
+                            </ul>
+                        </div>`;
+                }
+
+                pageEl.innerHTML = `
+                    <div class="max-w-3xl mx-auto w-full text-left pt-8">
+                        <div class="flex items-center mb-6 pb-6 border-b border-slate-200">
+                           <div class="text-6xl mr-6">${data.icon}</div>
+                           <h2 class="text-2xl md:text-3xl font-bold text-slate-800">${data.title}</h2>
+                        </div>
+                        <div class="content-body text-lg md:text-xl leading-relaxed">
+                            ${blocksHtml}
+                            ${referenceHtml}
+                        </div>
+                    </div>
+                `;
+                contentContainer.appendChild(pageEl);
+            });
+        }
+
+        // 특정 인덱스의 페이지를 활성화하고 탭 버튼도 활성화
+        function showPage(index) {
+            const pages = document.querySelectorAll('.page');
+            const tabs = document.querySelectorAll('.tab-button');
+            
+            pages.forEach(page => page.classList.remove('active'));
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            if (pages[index]) pages[index].classList.add('active');
+            if (tabs[index]) tabs[index].classList.add('active');
+        }
+
+        // DOMContentLoaded 이벤트 발생 시 콘텐츠 렌더링 및 첫 페이지 활성화
+        document.addEventListener('DOMContentLoaded', () => {
+            renderContent();
+            showPage(0); // 페이지 로드 시 첫 번째 탭 활성화
+        });
+    </script>
+</body>
+</html>
